@@ -21,6 +21,7 @@ export default function Todo() {
         mutationFn: (data)=>putDataUser(data),
         onSuccess:()=>{
             setEditMode(null)
+            reset()
             qc.invalidateQueries("users")}
     })
 
@@ -41,7 +42,6 @@ export default function Todo() {
             reset()
         }else{
             editUser.mutate(values)
-            reset()
         }
       }
       if(editMode){
