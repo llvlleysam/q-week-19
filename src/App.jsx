@@ -1,35 +1,21 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useContext, useState } from "react";
+import Todo from "./components/common/Todo";
+import TodoList from "./components/common/TodoList";
+import useGetUser from "./hooks/useGet";
+import { rootContext } from "./lib/Context";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const {editMode}=useContext(rootContext)
+  console.log(editMode)
+  const {data: users}=useGetUser()
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="w-full flex flex-col items-center mt-4">
+      <div className="w-[500px] flex flex-col gap-4">
+        <Todo />
+        {users?.map(user=><TodoList key={user.id} user={user} />)}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
