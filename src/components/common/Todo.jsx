@@ -11,13 +11,17 @@ export default function Todo() {
     const {mutate}=usePostUser()
     const {editMode,setEditMode}=useContext(rootContext)
 
+    console.log(editMode?.id)
      async function putDataUser(newUser){
-        const response= await httpServes.put(`${BaseURL}/users/${editMode.id}`,newUser)
+        const response= await httpServes.patch(`${BaseURL}/users/${editMode.id}`,newUser)
+        console.log(newUser)
     }
     const qc=useQueryClient()
     const editUser= useMutation({
-        mutationFn:putDataUser,
-        onSuccess:()=>qc.invalidateQueries("users")
+        mutationFn: (data)=>putDataUser(data),
+        onSuccess:()=>{
+            setEditMode(null)
+            qc.invalidateQueries("users")}
     })
 
     const {
@@ -37,7 +41,6 @@ export default function Todo() {
             reset()
         }else{
             editUser.mutate(values)
-            setEditMode(null)
             reset()
         }
       }
